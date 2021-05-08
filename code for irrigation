@@ -1,0 +1,42 @@
+const int motor = 13;
+const int soilin = A0;
+int sensorValue = 0;
+char bt;
+const int limit = 200;
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(motor, OUTPUT);
+  pinMode(soilin, INPUT);
+}
+
+void loop()
+{
+  sensorValue = analogRead(soilin);
+  
+  if (sensorValue < limit)
+  {
+    digitalWrite (motor, HIGH);
+    delay(1000);
+    digitalWrite (motor, LOW);
+  }
+  
+  while (Serial.available()>0)
+  {
+    bt=Serial.read();
+    delay(20);
+    if (bt=='2')
+    {
+      Serial.println (sensorValue);
+    }
+    else if (bt=='1')
+    {
+      digitalWrite (motor, HIGH);
+    }
+    else if (bt=='0')
+    {
+      digitalWrite (motor, LOW);
+    }
+  }
+}
